@@ -25,7 +25,8 @@ pipeline {
         }
         stage ('Docker push') {
             steps {
-                docker.withRegistry('https://705746146520.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:ecr-cred') {
+                script {
+                   docker.withRegistry('https://705746146520.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:ecr-cred') {
                    docker.image('demo').push('latest')
             }
          }
@@ -33,7 +34,7 @@ pipeline {
         
         }
        
-         
+             }
       }
    
 
