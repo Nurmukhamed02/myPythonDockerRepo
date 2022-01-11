@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-python-deployment
+  name: my-deployment
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: python-app
+      app: deploy
   template:
     metadata:
       labels:
-        app: python-app
+        app: deploy
     spec:
       containers:
-      - name: my-python-app
+      - name: my-deployment
         image: 705746146520.dkr.ecr.us-east-1.amazonaws.com/nur02:test01
         imagePullPolicy: Always
         ports:
@@ -26,7 +26,7 @@ metadata:
   name: python-app-svc
 spec:
   selector:
-    app: python-app
+    app: deploy
   ports:
     - protocol: TCP
       port: 5000
