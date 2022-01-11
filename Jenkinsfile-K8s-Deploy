@@ -4,7 +4,7 @@ pipeline {
             AWS_ACCOUNT_ID="705746146520"
             AWS_DEFAULT_REGION="us-east-1" 
             IMAGE_REPO_NAME="nur02"
-            IMAGE_TAG="test01"
+            IMAGE_TAG="0.0.1"
             REPOSITORY_URL = "705746146520.dkr.ecr.us-east-1.amazonaws.com/nur02"
     }
     stages {
@@ -17,14 +17,14 @@ pipeline {
         stage('Building image') {
            steps{
              script {
-                dockerImage = docker.build "${IMAGE_REPO_NAME}"
+                dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
         }
       }
     }
         stage ('Docker push') {
             steps {
                 script {
-                   docker.withRegistry('${REPOSITORY_URL}', 'ecr:us-east-1:ecr-cred') {
+                   docker.withRegistry('https://705746146520.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:ecr-cred') {
                    docker.image('${IMAGE_REPO_NAME}').push('${IMAGE_TAG}')
             }
          }
