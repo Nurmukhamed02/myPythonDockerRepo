@@ -23,7 +23,7 @@ pipeline {
             steps {
                 script {
                    docker.withRegistry('https://705746146520.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:ecr-cred') {
-                   docker.image('demo').push('latest')
+                   docker.image('nur02').push('latest')
             }
          }
       }
