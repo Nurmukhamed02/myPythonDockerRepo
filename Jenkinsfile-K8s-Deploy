@@ -14,16 +14,18 @@ pipeline {
             checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/Nurmukhamed02/myPythonDockerRepo.git']]])
             }
         }
-        stage('Build') {
-            steps {
-                sh 'docker build -t nur02 .'
-                        }
-                }
+        stage('Building image') {
+           steps{
+             script {
+                dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+        }
+      }
+    }
         stage ('Docker push') {
             steps {
                 script {
                    docker.withRegistry('https://705746146520.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:ecr-cred') {
-                   docker.image('nur02').push('latest')
+                   docker.image('${IMAGE_REPO_NAME}').push('${IMAGE_TAG}')
             }
          }
       }
