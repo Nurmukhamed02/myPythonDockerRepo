@@ -14,16 +14,6 @@ pipeline {
             checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/Nurmukhamed02/myPythonDockerRepo.git']]])
             }
         }
-        
-        stage('Logging into AWS ECR') {
-            steps {
-                script {
-                sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
-                }
-                 
-            }
-        }
-        
         stage ('Build docker image') {
             steps {
                 script {
@@ -33,9 +23,18 @@ pipeline {
                 }
             }
         }
+        stage ('Docker push') {
+            steps {
+                docker.withRegistry('https://705746146520.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:ecr-cred') {
+                   docker.image('demo').push('latest')
+            }
+         }
+      }
+        
+        }
        
          
       }
-    }
+   
 
    
